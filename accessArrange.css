@@ -1,0 +1,26 @@
+/* body{ 
+    background: ghostwhite;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 2rem;
+}
+
+.box{
+    background: blue;
+    width: 10rem;
+    height: 10rem;
+}
+
+.container {
+    display: grid;
+    width: 80%;
+    height: 80%;
+    grid-template-rows: repeat(7, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    align-items: center;
+    
+} */

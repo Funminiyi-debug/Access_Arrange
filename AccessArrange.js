@@ -7,6 +7,21 @@ const courses = ['EOB', 'Insurance', 'Money Laundering', 'Economics']
 const classes = [];
 const assignedStudents = []
 const numberOfClasses = 13;
+let count = 0;
+
+const createTable = () => {
+    count ++
+    let table = `
+      <tr>
+        <th scope="row">${count}</th>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>`
+      $('#tbody').append(table)
+}
+
+
 
 // to generate random numbers 
 const random = (min, max) => {
@@ -16,11 +31,14 @@ const random = (min, max) => {
 
 
 // create a list of students in order 
-const names = []
+const names = ['Ade', 'piper', 'tobi', 'Oluwa', 'paul', 'ayo', 'ben', 'kola', 'adebayo', 'ayokunle', 
+                'eto', 'ronald', 'christian', 'hakeem', 'ogechi', 'kaycee', 'pelumi', 'gold',' tola']
 
-for(let i=1; i<100; i+=1) {
-    names.push(`Student--${i}`)
-}
+
+
+//for(let i=1; i<100; i+=1) {
+  //  names.push(`Student--${i}`)
+//}
 
 // log(names)
 
@@ -28,8 +46,8 @@ const createGroups = () => {
     const classifiedGroup = []
     const arrayPool = [];
     // create group of students 
-    for(let i=1; i<=100; i+=1){
-        arrayPool.push({ group: random(9, 21), name: names[random(0, names["length"]-1)]})
+    for(let i=1; i<=19; i+=1){
+        arrayPool.push({ group: random(9, 21), name: names[random(0, names["length"])]})
     }
 
     // to create groups 
@@ -40,15 +58,16 @@ const createGroups = () => {
     // to know the number of students in a group and assign them 
     arrayPool.forEach((value) => {
         classifiedGroup.forEach((test) => {
-            if(value["group"] == test["group"]){
-                test["frequency"]+=1
-                test["students"].push({nameOfStudent: value["name"], groupNumber: test["group"]})
-                while(test["students"].length > 5){
-                    test["students"].pop()
-                    test["frequency"]-=1
-                }
-            }
-        })
+       if (test.students.length > 5){
+           test.students.pop()
+           test.frequency -= 1
+       } else {
+           if (value.group === test.group) {
+               test.frequency += 1
+               test.students.push({nameOfStudent: value.name, groupNumber: test.group})
+           }
+       }
+    })
     })
     return { arrayPool, classifiedGroup }
 }
@@ -61,7 +80,7 @@ const classifiedGroup = sample.classifiedGroup
 const assignExamSchedule = (numberOfClasses) => {
         let rearranged = ''
     for (let i=1; i <= numberOfClasses; i+=1){
-        classes.push(random(0, courses["length"]-1))
+        classes.push(random(0, courses["length"]))
         rearranged = classes.map((value, index) => {
                 return { group: index+9, course: courses[value] }
             })
@@ -69,7 +88,10 @@ const assignExamSchedule = (numberOfClasses) => {
     return rearranged
 }
 
+
 const arrangement = assignExamSchedule(numberOfClasses);
+
+
 
 // =================== THIS IS THE GRID ARRANGEMENT PART =========== //
 
@@ -122,5 +144,4 @@ const assignSeats = (receivedArray) => {
     })
     return receivedArray
 }
-
 log(assignSeats(data))
