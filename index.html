@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://bootswatch.com/4/cyborg/bootstrap.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Access arrange</title>
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js" type="text/javascript"></script>  
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>  
+
+    <link href="http://cdn.grapecity.com/spreadjs/hosted/css/gc.spread.sheets.excel2013white.10.1.0.css" rel="stylesheet" type="text/css" />  
+    <script type="text/javascript" src="http://cdn.grapecity.com/spreadjs/hosted/scripts/gc.spread.sheets.all.10.1.0.min.js"></script>  
+    <script type="text/javascript" src="http://cdn.grapecity.com/spreadjs/hosted/scripts/interop/gc.spread.excelio.10.1.0.min.js"></script>  
+    
+    <!-- TO CONTAIN THE SPREADSHEET  -->
+    <script type="text/javascript">  
+        
+        $(document).ready(function () {  
+            $.support.cors = true;
+            var workbook = new GC.Spread.Sheets.Workbook(document.getElementById("ss"));  
+        });
+
+        var excelIO = new GC.Spread.Excel.IO();  
+
+        function ImportFile() {  
+            var excelUrl = "./test.xlsx";  
+
+            var oReq = new XMLHttpRequest();  
+            oReq.open('get', excelUrl, true);  
+            oReq.responseType = 'blob';  
+            oReq.onload = function () {  
+            var blob = oReq.response;  
+            excelIO.open(blob, LoadSpread, function (message) {  
+                console.log(message);  
+            });  
+        };  
+        oReq.send(null);  
+        }  
+        function LoadSpread(json) {  
+            jsonData = json;  
+            workbook.fromJSON(json);  
+
+            workbook.setActiveSheet("Revenues (Sales)");  
+        } 
+    </script> 
+
+    <style>
+        body{ 
+            background: ghostwhite;
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .box{
+            background: blue;
+            width: 10rem;
+            height: 10rem;
+        }
+
+        .container {
+            display: grid;
+            width: 80%;
+            height: 80%;
+            grid-template-rows: repeat(7, 1fr);
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 10px;
+            align-items: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+   <!-- ===================== SPREADSHEET ARRANGEMENT ==================== -->
+    
+    <div id="ss" style="height:600px ; width :100%; " class="jumbotron well">This should show</div>  
+
+    <!-- =====================  END OF SPREADSHEET ARRANGEMENT ============== -->
+    <!-- MARKUP  -->
+    <!-- <div style="height: 200px; width: 100%" class="jumbotron text-white">HEY THERE!!</div> -->
+
+    <div class="container">
+
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    <div class="box">
+        <p></p>
+    </div>
+    </div>
+    <script src="./AccessArrange.js"></script>
+</body>
+</html>
