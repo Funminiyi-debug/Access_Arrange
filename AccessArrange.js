@@ -2,6 +2,60 @@ const log = (text) => {
     console.log(text)
 }
 
+const returnRandomItemFromArray = (array, condition=true) => {
+    const randomItem = array[random(0,array.length-1)]
+   const randomItemIndex = array.findIndex((item) => item === randomItem)
+   
+//    if(condition == true) {
+        if(randomItemIndex !== -1 ){
+            array.splice(randomItemIndex, 1)
+        // }
+   }
+    return { randomItem, array}
+}
+
+
+const createTableElements = (myobject, element, count) => {
+    let table = `
+      <tr>
+        <th scope="row">${count}</th>
+        <td>${myobject.name}</td>
+        <td>${myobject.group}</td>
+        <td></td>
+      </tr>`
+      $(`#${element}`).append(table)
+}
+
+const createTable = (myobject, idcount) => {
+    let table = `
+    <table class="table my-4">
+        <h5 class="text-center pt-2 pb-2">Group ${myobject.group}</h5>
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name </th>
+            <th scope="col">Class</th>
+            <th scope="col">Exam</th>
+          </tr>
+        </thead>
+        <tbody id="item${idcount}">
+        </tbody>
+    </table>
+    `
+    $(`#group-section`).append(table)
+}
+
+const createGrid = (myobject, element) => {
+    let grid = `
+    <div class="grid-item">
+        <p class="lead">${myobject.name}</p>
+        <p class="lead">Group ${myobject.group}</p>
+        <p>Row: ${myobject.position.row}</p>
+        <p>Column: ${myobject.position.column}</p>
+    </div>
+    `
+    $(`#${element}`).append(grid)
+}
 
 const courses = ['EOB', 'Insurance', 'Money Laundering', 'Economics']
 const classes = [];
@@ -18,44 +72,78 @@ const random = (min, max) => {
 // create a list of students in order 
 const names = []
 
-for(let i=1; i<100; i+=1) {
+
+for(let i=1; i<=100; i+=1) {
     names.push(`Student--${i}`)
 }
 
-// log(names)
+const namesToUse = [...names]
 
-const createGroups = () => {
+// ======================= BEGINNING OF CREATE GROUPS FUNCTION 
+const createGroups = (namesArray) => {
     const classifiedGroup = []
     const arrayPool = [];
-    // create group of students 
-    for(let i=1; i<=100; i+=1){
-        arrayPool.push({ group: random(9, 21), name: names[random(0, names["length"]-1)]})
+    const groups = [];
+    const countArray = []
+    
+    for(let i=0; i<(100/13); i+=1){
+        countArray.push(i)
     }
 
+    countArray.forEach((count) => {
+        for(let j=9; j<=21; j+=1){
+            groups.push(j)
+        }
+    })
+    
+    // create group of students 
+    for(let i=0; i<=namesArray.length-1; i+=1){
+        for(let j=9; j<=21; j+=1){
+            let student = returnRandomItemFromArray(namesArray).randomItem
+            let group = returnRandomItemFromArray(groups).randomItem
+            arrayPool.push({ group: group, name: student})
+        }
+    }
+
+    arrayPool.forEach((item, itemIndex, items) => {
+        if(item.name === undefined) {
+            arrayPool.splice(itemIndex, 4)
+        }
+    })
+    
+    // log(arrayPool)
     // to create groups 
     for(let i=9; i<=21; i+=1) {
         classifiedGroup.push({ group: i, frequency: 0, students: []})
     }
 
+    
+    // arrayPool.forEach((item) =>{
+    //     if(item.group === 21){
+    //         log(item)
+    //     }
+    // })
+
     // to know the number of students in a group and assign them 
-    arrayPool.forEach((value) => {
-        classifiedGroup.forEach((test) => {
-            if(value["group"] == test["group"]){
-                test["frequency"]+=1
-                test["students"].push({nameOfStudent: value["name"], groupNumber: test["group"]})
-                while(test["students"].length > 5){
-                    test["students"].pop()
-                    test["frequency"]-=1
+        classifiedGroup.forEach((group) => {
+            arrayPool.forEach((value) => {            
+                if(value["group"] == group["group"]){
+                    group["students"].push(value)
                 }
-            }
+            })
         })
-    })
+
     return { arrayPool, classifiedGroup }
 }
 
-const sample = createGroups()
+// ================= END OF CREATE GROUPS FUNCTION 
+
+
+const sample = createGroups(namesToUse)
 
 const classifiedGroup = sample.classifiedGroup
+const arrayPool = sample.arrayPool
+
 
 // to assign exam schedule
 const assignExamSchedule = (numberOfClasses) => {
@@ -73,54 +161,159 @@ const arrangement = assignExamSchedule(numberOfClasses);
 
 // =================== THIS IS THE GRID ARRANGEMENT PART =========== //
 
-const assignExamClass = (array) => {
-    const receivedPool = array;
+const assignExamClass = (Groups) => {
     const eachSubset = []
     let testExistence = false
-    receivedPool.forEach((group) => {
-        testExistence = assignedStudents.find(element =>  element == group["students"].slice(2))
+    const returnedClass = []
+    Groups.forEach((group) => {
+        let newlyAssigned = []
+        testExistence = assignedStudents.find(element =>  element == newlyAssigned)
         if(testExistence == undefined){
-            assignedStudents.push(group["students"].slice(2))
-            eachSubset.push(group["students"].slice(2))
+            for(let i=0; i<=random(1, 2); i+=1){
+                newlyAssigned.push(group["students"].pop())
+            }
+            eachSubset.push(newlyAssigned)
+            assignedStudents.push(newlyAssigned)
         }
     })
-    return eachSubset
-}
-
-const printStudentsInSameClass = (nameOfClass, entireList) => {
-    const list = assignExamClass(entireList)
-    const returnedArray = []
-    list.forEach((item) => {
-        item.forEach((value) => {
-            returnedArray.push(value)
+    eachSubset.forEach((subset) => {
+        subset.forEach((student) => {
+            returnedClass.push(student)
         })
     })
-    return returnedArray
+
+    return returnedClass
 }
 
-const data = printStudentsInSameClass('Marigold', classifiedGroup);
+
+
+
+const classOne = assignExamClass(classifiedGroup);
+// funciton t return random items from an array
+
 
 //  assign seats function 
-const assignSeats = (receivedArray) => {
+const assignSeatsPosition = (receivedArray) => {
     const positions = [];
+    const returnArray = []
     //  create an array of rows and column seat numbers
     for(let row=1; row<=7; row+=1){
         for(let column=1; column<=5; column+=1){            
-            positions.push({position: {row: row, column: column}})
+            positions.push({row: row, column: column})
         }
     }
+    positions.length = classOne.length
 
-    //  assign the seat numbers to each student  
-    for(let i=0; i<data.length; i+=1){
-        receivedArray[i]["position"] = positions[i]
-    }        
-    receivedArray.forEach((item) => {
-        if (item["positions"] === undefined){
-            log(`this is true`)
-            delete item
-        }
+    positions.forEach((position) => {
+        const student = returnRandomItemFromArray(receivedArray).randomItem; 
+        returnArray.push({ name: student.name, group: student.group,  position: position})
     })
-    return receivedArray
+        
+    return returnArray
 }
 
-log(assignSeats(data))
+const seatStudents = assignSeatsPosition(classOne)
+log(seatStudents)
+// ================== WORKING SPACE ==================
+
+
+
+// ========== to display the assigned groups 
+const element = 'namestbody'
+classifiedGroup.forEach((item, itemIndex, items) => { 
+    createTable(item, itemIndex+1)
+    let theId = `item${itemIndex+1}`
+    item.students.forEach((student, studentIndex) => {
+        createTableElements(student, theId, studentIndex+1) 
+    })
+   
+})
+// ====== end of assigned groups 
+
+
+// =========== All Names section =========
+arrayPool.forEach((student, studentIndex) => {
+    createTableElements(student, element, studentIndex+1)
+})
+//  end of names section 
+
+// ======== schedule section 
+const createExamSchedule = (myobject, element, count) => {
+    let table = `
+      <tr>
+        <th scope="row">${count}</th>
+        <td>Group ${myobject.group}</td>
+        <td>${myobject.course}</td>
+      </tr>`
+      $(`#${element}`).append(table)
+}
+
+const arrangementId = 'schedules'
+
+arrangement.forEach((group, groupIndex) => {
+    createExamSchedule(group, arrangementId, groupIndex+1)
+})
+//  ============ end of schedule section 
+
+// ============= beginning of grid 
+const box = 'mycontainer';
+
+seatStudents.forEach((student) => {
+    createGrid(student, box)
+})
+
+//  ===== end of grid system 
+//  ================ END OF WORKING SPACE ===================== //
+
+//  ================= BEGINNING OF ELEMENTS SELECTION
+
+//  ========== BUTTONS SELECTION
+const studentButton = document.getElementById('students');
+const groupsButton = document.getElementById('groups');
+const scheduleButton = document.getElementById('schedule');
+const examScheduleButton = document.getElementById('exams');
+
+
+// ========== SECTIONS SELECTION
+const studentsList = document.getElementById('names-section');
+const groupsList = document.getElementById('group-section');
+const scheduleList = document.getElementById('schedule-section');
+const examScheduleSection = document.getElementById('mycontainer');
+
+groupsList.style.display = "none"
+scheduleList.style.display = "none"
+examScheduleSection.style.display = "none"
+
+studentButton.addEventListener('click', () => {
+    alert('student button worked')
+    studentsList.style.display = "block"
+    groupsList.style.display = "none"
+    scheduleList.style.display = "none"
+    examScheduleSection.style.display = "none"
+})
+
+groupsButton.addEventListener('click', () => {
+    alert('group button worked')
+    groupsList.style.display = "block"
+    studentsList.style.display = "none"
+    scheduleList.style.display = "none"
+    examScheduleSection.style.display = "none"
+})
+
+scheduleButton.addEventListener('click', () => {
+    alert('schedule button worked')
+    scheduleList.style.display = "block"
+    groupsList.style.display = "none"
+    studentsList.style.display = "none"
+    examScheduleSection.style.display = "none"
+})
+
+examScheduleButton.addEventListener('click', () => {
+    alert('exam schedule button worked')
+    examScheduleSection.style.display = "grid"
+    groupsList.style.display = "none"
+    scheduleList.style.display = "none"
+    studentsList.style.display = "none"
+})
+
+//  ==============================  END OF ELEMENTS SELECTION 
