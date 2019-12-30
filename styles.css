@@ -1,14 +1,57 @@
 .grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  background-color: #343a40;
+  padding: 15px;
+  grid-gap: 15px;
+  grid-auto-flow: row;
+  font-weight: bold;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.btn-link{
+  color: white;
+  font-weight: bold !important;
+}
+
+@media (max-width: 768px){
+  .grid-container {
     display: grid;
-    grid-template-columns: repeat(5, auto);
-    background-color: #2196F3;
-    padding: 10px;
+    grid-template-columns: repeat(3, auto);
+    background-color: #343a40;
+    padding: 15px;
+    grid-gap: 15px;
     grid-auto-flow: row;
   }
   .grid-item {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(0, 0, 0, 0.8);
     padding: 20px;
     font-size: 1rem;
     text-align: center;
   }
+}
+
+@media (max-width: 500px){
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    background-color: #343a40;
+    padding: 15px;
+    grid-gap: 15px;
+    grid-auto-flow: row;
+  }
+  .grid-item {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 1rem;
+    text-align: center;
+  }
+}
